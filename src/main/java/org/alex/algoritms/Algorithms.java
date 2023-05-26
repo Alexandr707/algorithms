@@ -1,5 +1,7 @@
 package org.alex.algoritms;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Random;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
@@ -7,12 +9,16 @@ import java.util.Random;
 public class Algorithms {
     public static void main(String[] args) {
         int[] arr = intArray(20);
-
         printArray(arr);
-
         System.out.println("Operations count: " + BubbleSort.sort(arr));
-
         printArray(arr);
+
+        ArrayList<File> fileList = new ArrayList<>();
+        FileSearch.search(new File("F:\\"), fileList);
+        System.out.println("Find: " + fileList.size() + " files");
+//        for (File file: fileList) {
+//            System.out.println(file.getName());
+//        }
 
     }
     public static int[] intArray(int size) throws IllegalArgumentException {
