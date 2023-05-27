@@ -9,11 +9,12 @@ import java.util.Random;
 // then press Enter. You can now see whitespace characters in your code.
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(40);
+        int[] arr = intArray(10000);
         int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
-        printArray(arr);
-        System.out.println("BubbleSort count: " + bubbleSort(bubbleSortArray));
-        printArray(bubbleSortArray);
+//        printArray(arr);
+        createThread(()->{
+            System.out.println("BubbleSort time: " + mesureTimr(()->bubbleSort(bubbleSortArray)) + " ms");
+        }, "BubbleSort").start();
 
 //        ArrayList<File> fileList = new ArrayList<>();
 //        FileSearch.search(new File("F:\\"), fileList);
@@ -23,12 +24,20 @@ public class Algorithms {
 //        }
 
         int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
-        System.out.println("SelectedSort count: " + selectedSort(selectedSortArray));
-        printArray(selectedSortArray);
+        createThread(()->{
+            System.out.println("SelectedSort time: " + mesureTimr(()->selectedSort(selectedSortArray)) + " ms");
+        },"SelectedSort").start();
+
 
         int[] quickSortArray = Arrays.copyOf(arr,arr.length );
-        quickSort(quickSortArray, 0, quickSortArray.length - 1);
-        printArray(quickSortArray);
+        createThread(()->{
+            System.out.println("QuickSort time: " + mesureTimr(()->quickSort(quickSortArray, 0, quickSortArray.length - 1)) + " ms");
+        }, "QuickSort").start();
+
+
+//        printArray(quickSortArray);
+//        printArray(bubbleSortArray);
+//        printArray(selectedSortArray);
 
     }
 
@@ -39,7 +48,7 @@ public class Algorithms {
         Random rand = new Random();
 
         for (int i = 0; i < arr.length; i++) {
-            int tmp  = rand.nextInt(500);
+            int tmp  = rand.nextInt(size);
             arr[i] = tmp;
         }
         return arr;
@@ -103,6 +112,7 @@ public class Algorithms {
         return step;
     }
 
+//  юыстрая сортировка
     public static void quickSort(int[] arr, int from, int to){
         if (from < to) {
             int divideIndex = partition(arr, from, to);
@@ -130,6 +140,16 @@ public class Algorithms {
             }
         }
         return leftidex;
+    }
+
+    public static long mesureTimr(Runnable task){
+        long startTime = System.currentTimeMillis();
+        task.run();
+        return System.currentTimeMillis() - startTime;
+    }
+
+    public static Thread createThread(Runnable task, String taskName){
+        return new Thread(task, taskName);
     }
 
 
