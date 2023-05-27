@@ -5,15 +5,15 @@ package org.alex.algoritms;
 import java.util.Arrays;
 import java.util.Random;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(10000);
+        int[] arr = intArray(100000);
         int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
-//        printArray(arr);
+
         createThread(()->{
-            System.out.println("BubbleSort time: " + mesureTimr(()->bubbleSort(bubbleSortArray)) + " ms");
+            System.out.println("BubbleSort time: "
+                    + mesureTimr(()->bubbleSort(bubbleSortArray))
+                    + " ms");
         }, "BubbleSort").start();
 
 //        ArrayList<File> fileList = new ArrayList<>();
@@ -25,20 +25,25 @@ public class Algorithms {
 
         int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
         createThread(()->{
-            System.out.println("SelectedSort time: " + mesureTimr(()->selectedSort(selectedSortArray)) + " ms");
+            System.out.println("SelectedSort time: "
+                    + mesureTimr(()->selectedSort(selectedSortArray))
+                    + " ms");
         },"SelectedSort").start();
 
 
         int[] quickSortArray = Arrays.copyOf(arr,arr.length );
         createThread(()->{
-            System.out.println("QuickSort time: " + mesureTimr(()->quickSort(quickSortArray, 0, quickSortArray.length - 1)) + " ms");
+            System.out.println("QuickSort time: "
+                    + mesureTimr(()->quickSort(quickSortArray, 0, quickSortArray.length - 1))
+                    + " ms");
         }, "QuickSort").start();
 
-
-//        printArray(quickSortArray);
-//        printArray(bubbleSortArray);
-//        printArray(selectedSortArray);
-
+        int[] mergeSortArray = Arrays.copyOf(arr,arr.length );
+        createThread(()->{
+            System.out.println("MergeSort time: "
+                    + mesureTimr(()->quickSort(mergeSortArray, 0, mergeSortArray.length - 1))
+                    + " ms");
+        }, "MergeSort").start();
     }
 
     public static int[] intArray(int size) throws IllegalArgumentException {
@@ -152,5 +157,54 @@ public class Algorithms {
         return new Thread(task, taskName);
     }
 
+//    алгоритм слияния
+    public static int[] mergeSort(int[] arr){
+        int[] tmp;
+        int[] srcArray = arr;
+        int[] destArray = new int[arr.length];
+
+        int size = 1;
+        
+        while(size < arr.length){
+            for (int i = 0; i < arr.length; i+= 2 * size) {
+                merge(srcArray, i , srcArray, i + size, destArray,i , size);
+            }
+
+            tmp = destArray;
+            destArray = srcArray;
+            srcArray = tmp;
+
+            size *= 2;
+        }
+
+        return srcArray;
+    }
+
+    public static void merge(int[] src1, int src1Start, int[] src2, int src2Start, int[] dest, int destStart, int size){
+        int index1 = src1Start;
+        int index2 = src2Start;
+
+        int src1End = Math.min(src1Start + size, src1.length);
+        int src2End = Math.min(src2Start + size, src1.length);
+
+        if(src1Start + size > src1.length){
+            for (int i = src1Start; i < src1End; i++) {
+                dest[i] = src1[i];
+            }
+            return;
+        }
+
+        int iterationCount = src1End - src1Start + src2End - src2Start;
+
+        for (int i = destStart; i < destStart + iterationCount; i++) {
+            if (index1 < src1End && (index2 >= src2End || src1[index1] < src2[index2])){
+                dest[i] = src1[index1];
+                index1++;
+            }else{
+                dest[i] = src1[index2];
+                index2++;
+            }
+        }
+    }
 
 }
