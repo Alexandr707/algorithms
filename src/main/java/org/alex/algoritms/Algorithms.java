@@ -2,23 +2,29 @@ package org.alex.algoritms;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(20);
+        int[] arr = intArray(40);
+        int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
         printArray(arr);
-        System.out.println("Operations count: " + BubbleSort.sort(arr));
-        printArray(arr);
+        System.out.println("BubbleSort count: " + BubbleSort.sort(bubbleSortArray));
+        printArray(bubbleSortArray);
 
-        ArrayList<File> fileList = new ArrayList<>();
-        FileSearch.search(new File("F:\\"), fileList);
-        System.out.println("Find: " + fileList.size() + " files");
+//        ArrayList<File> fileList = new ArrayList<>();
+//        FileSearch.search(new File("F:\\"), fileList);
+//        System.out.println("Find: " + fileList.size() + " files");
 //        for (File file: fileList) {
 //            System.out.println(file.getName());
 //        }
+
+        int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
+        System.out.println("SelectedSort count: " + SelectedSort.sort(selectedSortArray));
+        printArray(selectedSortArray);
 
     }
     public static int[] intArray(int size) throws IllegalArgumentException {
