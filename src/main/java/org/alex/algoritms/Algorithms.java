@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(8_000_000);
+        int[] arr = intArray(10_000);
 
 //        ArrayList<File> fileList = new ArrayList<>();
 //        FileSearch.search(new File("F:\\"), fileList);
@@ -17,14 +17,14 @@ public class Algorithms {
 //        }
 
         int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
-//        createThread(()-> System.out.println("BubbleSort time: "
-//                + mesureTimr(()->bubbleSort(bubbleSortArray))
-//                + " ms"), "BubbleSort").start();
+        createThread(()-> System.out.println("BubbleSort time: "
+                + mesureTimr(()->bubbleSort(bubbleSortArray))
+                + " ms"), "BubbleSort").start();
 
-//        int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
-//        createThread(()-> System.out.println("SelectedSort time: "
-//                + mesureTimr(()->selectedSort(selectedSortArray))
-//                + " ms"),"SelectedSort").start();
+        int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
+        createThread(()-> System.out.println("SelectedSort time: "
+                + mesureTimr(()->selectedSort(selectedSortArray))
+                + " ms"),"SelectedSort").start();
 
 
         int[] quickSortArray = Arrays.copyOf(arr,arr.length );
@@ -42,14 +42,29 @@ public class Algorithms {
 //                + " ms");
 
         System.out.println("BinarySearch time: "
-                + mesureTimr(()->binarySearch(mergeSortArray, 5686548))
+                + mesureTimr(()-> binarySearch(mergeSortArray, 1000))
                 + " ms");
 
         System.out.println("LinearSearch time: "
-                + mesureTimr(()->linearSeach(mergeSortArray, 568))
+                + mesureTimr(()-> linearSeach(mergeSortArray, 1000))
                 + " ms");
 
+        System.out.println("Second min element: " + secondMin(mergeSortArray));
+    }
 
+
+//    второй минимальный элемент
+    public static int secondMin(int[] arr){
+        int min1 = Integer.MAX_VALUE;
+        int min2 = Integer.MAX_VALUE;
+
+        for (int j : arr) {
+            if (j < min1) {
+                min2 = min1;
+                min1 = j;
+            } else if (j < min2 && j != min1) min2 = j;
+        }
+        return min2;
     }
 
 //    линейный поиск
@@ -66,10 +81,12 @@ public class Algorithms {
         int endIndex = arr.length;
         int middleIndex;
 
-        while(endIndex > startIndex){
+        while(endIndex >= startIndex){
             middleIndex = startIndex + (endIndex - startIndex) / 2;
 
             if (arr[middleIndex] == elementToSearch) return middleIndex;
+            if (endIndex == startIndex || startIndex == middleIndex )
+                return arr[startIndex] == elementToSearch ?  startIndex : -1;
 
             if (arr[middleIndex] > elementToSearch) endIndex = middleIndex -1;
             else startIndex = middleIndex;
