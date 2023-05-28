@@ -7,14 +7,7 @@ import java.util.Random;
 
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(100000);
-        int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
-
-        createThread(()->{
-            System.out.println("BubbleSort time: "
-                    + mesureTimr(()->bubbleSort(bubbleSortArray))
-                    + " ms");
-        }, "BubbleSort").start();
+        int[] arr = intArray(8_000_000);
 
 //        ArrayList<File> fileList = new ArrayList<>();
 //        FileSearch.search(new File("F:\\"), fileList);
@@ -23,27 +16,84 @@ public class Algorithms {
 //            System.out.println(file.getName());
 //        }
 
-        int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
-        createThread(()->{
-            System.out.println("SelectedSort time: "
-                    + mesureTimr(()->selectedSort(selectedSortArray))
-                    + " ms");
-        },"SelectedSort").start();
+        int[] bubbleSortArray = Arrays.copyOf(arr,arr.length);
+//        createThread(()-> System.out.println("BubbleSort time: "
+//                + mesureTimr(()->bubbleSort(bubbleSortArray))
+//                + " ms"), "BubbleSort").start();
+
+//        int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
+//        createThread(()-> System.out.println("SelectedSort time: "
+//                + mesureTimr(()->selectedSort(selectedSortArray))
+//                + " ms"),"SelectedSort").start();
 
 
         int[] quickSortArray = Arrays.copyOf(arr,arr.length );
-        createThread(()->{
-            System.out.println("QuickSort time: "
-                    + mesureTimr(()->quickSort(quickSortArray, 0, quickSortArray.length - 1))
-                    + " ms");
-        }, "QuickSort").start();
+        createThread(()-> System.out.println("QuickSort time: "
+                + mesureTimr(()->quickSort(quickSortArray, 0, quickSortArray.length - 1))
+                + " ms"), "QuickSort").start();
 
         int[] mergeSortArray = Arrays.copyOf(arr,arr.length );
-        createThread(()->{
-            System.out.println("MergeSort time: "
-                    + mesureTimr(()->quickSort(mergeSortArray, 0, mergeSortArray.length - 1))
-                    + " ms");
-        }, "MergeSort").start();
+        System.out.println("MergeSort time: "
+                + mesureTimr(()->quickSort(mergeSortArray, 0, mergeSortArray.length - 1))
+                + " ms");
+
+//        System.out.println("BinarySearchRecursive time: "
+//                + mesureTimr(()->binarySearchRecursive(mergeSortArray, 0, mergeSortArray.length - 1, 568))
+//                + " ms");
+
+        System.out.println("BinarySearch time: "
+                + mesureTimr(()->binarySearch(mergeSortArray, 5686548))
+                + " ms");
+
+        System.out.println("LinearSearch time: "
+                + mesureTimr(()->linearSeach(mergeSortArray, 568))
+                + " ms");
+
+
+    }
+
+//    линейный поиск
+    public static int linearSeach(int[] arr, int elementToSearch){
+        for (int i = 0; i < arr.length; i++) {
+            if(arr[i] == elementToSearch) return i;
+        }
+        return -1;
+    }
+
+//    бинарный поиск
+    public static int binarySearch(int[] arr, int elementToSearch){
+        int startIndex = 0;
+        int endIndex = arr.length;
+        int middleIndex;
+
+        while(endIndex > startIndex){
+            middleIndex = startIndex + (endIndex - startIndex) / 2;
+
+            if (arr[middleIndex] == elementToSearch) return middleIndex;
+
+            if (arr[middleIndex] > elementToSearch) endIndex = middleIndex -1;
+            else startIndex = middleIndex;
+
+        }
+        return -1;
+    }
+
+//    бинарный поиск рекурсивный
+    public static int binarySearchRecursive(int[] arr, int startIndex, int endIndex, int elementToFind){
+        if (endIndex >= startIndex){
+            int middleIndex = startIndex + (endIndex - startIndex) / 2;
+
+            if (arr[middleIndex] == elementToFind) return middleIndex;
+
+            if (startIndex == endIndex) return -1;
+
+            if(arr[middleIndex] > elementToFind ){
+                return binarySearchRecursive(arr,startIndex,middleIndex - 1, elementToFind);
+            }else{
+                return binarySearchRecursive(arr,middleIndex,endIndex,elementToFind);
+            }
+        }
+        return -1;
     }
 
     public static int[] intArray(int size) throws IllegalArgumentException {
