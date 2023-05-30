@@ -3,8 +3,6 @@ package org.alex.countsort;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 
 public class CountSort {
     public static void main(String[] args){
@@ -31,15 +29,13 @@ public class CountSort {
 
     public static void countSort(int[] arr, int maxValue){
         int[] count = new int[maxValue];
-        for (int i = 0; i < arr.length; i++) {
-            count[arr[i]]++;
-        }
+        for (int k : arr) count[k]++;
 
-        int arrayindex = 0;
+        int arrayIndex = 0;
         for (int i = 0; i < count.length; i++) {
             for (int j = 0; j < count[i]; j++) {
-                arr[arrayindex] = i;
-                arrayindex++;
+                arr[arrayIndex] = i;
+                arrayIndex++;
             }
         }
     }
@@ -51,17 +47,13 @@ public class CountSort {
         }
 
         int[] count = new int[MAX_VALUE];
-        for (int i = 0; i < values.length; i++) {
-            count[values[i].intValue()] ++;
-        }
-        for (int i = 1; i < count.length; i++) {
-            count[i] = count[i] + count[i - 1];
-        }
+        for (R r : values) count[r.intValue()]++;
+        for (int i = 1; i < count.length; i++) count[i] = count[i] + count[i - 1];
 
         T[] out = (T[]) Array.newInstance(arr[0].getClass(), arr.length);
-        for (int i = 0; i < arr.length; i++) {
-            int value = compareValue.apply(arr[i]).intValue();
-            out[count[value] - 1] = arr[i];
+        for (T t : arr) {
+            int value = compareValue.apply(t).intValue();
+            out[count[value] - 1] = t;
             count[value]--;
         }
         return out;
