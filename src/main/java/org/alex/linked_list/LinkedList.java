@@ -34,11 +34,10 @@ public class LinkedList {
             newItem.data = item;
             if (isEmpty()) {
                 head = newItem;
-                tail = newItem;
             } else {
                 tail.next = newItem;
-                tail = newItem;
             }
+            tail = newItem;
         }
 
         public void reverse(){
