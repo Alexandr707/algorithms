@@ -1,7 +1,6 @@
 package org.alex.linked_list;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class LinkedList {
     public static void main(String[] args){
@@ -84,7 +83,7 @@ public class LinkedList {
 
         @Override
         public Iterator<T> iterator() {
-            return new Iterator<T>() {
+            return new Iterator<>() {
                 ListItem<T> current = head;
 
                 @Override
@@ -95,7 +94,7 @@ public class LinkedList {
                 @Override
                 public T next() {
                     T data = current.data;
-                    current= current.next;
+                    current = current.next;
                     return data;
                 }
             };
