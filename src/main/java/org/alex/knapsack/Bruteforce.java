@@ -8,7 +8,7 @@ public class Bruteforce {
         int[] weights = {2,5,4,7,8,3};
         int[] prices = {3,1,5,7,2,6};
 
-        int maxWeight = 16;
+        int maxWeight = 13;
         long count = 2L << weights.length;
 
         int maxPrice = 0;
