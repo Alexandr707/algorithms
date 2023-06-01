@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Algorithms {
     public static void main(String[] args) {
-        int[] arr = intArray(10_000);
+        int[] arr = intArray(100_000);
 
 //        ArrayList<File> fileList = new ArrayList<>();
 //        FileSearch.search(new File("F:\\"), fileList);
@@ -20,6 +20,11 @@ public class Algorithms {
         createThread(()-> System.out.println("BubbleSort time: "
                 + mesureTimr(()->bubbleSort(bubbleSortArray))
                 + " ms"), "BubbleSort").start();
+
+        int[] combSortArray = Arrays.copyOf(arr,arr.length);
+        createThread(()-> System.out.println("CombSort time: "
+                + mesureTimr(()->combSort(combSortArray))
+                + " ms"), "CombSort").start();
 
         int[] selectedSortArray = Arrays.copyOf(arr,arr.length);
         createThread(()-> System.out.println("SelectedSort time: "
@@ -160,6 +165,27 @@ public class Algorithms {
         }
 
         return movesCount;
+    }
+
+    public static void combSort(int[] array){
+        int gap = array.length;
+        boolean isSorted = true;
+        while(!isSorted || gap > 1){
+            if (gap > 1){
+                gap = gap * 10 / 13;
+            }else {
+                gap = 1;
+            }
+            isSorted = false;
+            for (int i = gap; i < array.length; i++) {
+                if (array[i] < array[i - gap]){
+                    isSorted = true;
+                    int tmp = array[i];
+                    array[i] = array[i - gap];
+                    array[i - gap] = tmp;
+                }
+            }
+        }
     }
 
     // сортировка выбором
